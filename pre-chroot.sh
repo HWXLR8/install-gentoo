@@ -96,7 +96,7 @@ tar xpvf $TARBALL
 ### chroot ###
 mount $BOOTP boot
 LOG "COPYING post-chroot.sh INTO CHROOT"
-cp -v post-chroot.sh boot
+cp -v ../post-chroot.sh .
 LOG "BEGIN CHROOT"
 mount -t proc none proc
 mount --rbind /sys sys
