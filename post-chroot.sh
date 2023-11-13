@@ -19,6 +19,9 @@ function LOG {
     echo -e "${RED}${1}${NC}"
 }
 
+### ENV INIT ###
+source /etc/profile
+
 ### PORTAGE TREE ###
 LOG "SYNCING PORTAGE TREE"
 emerge-webrsync
