@@ -67,6 +67,12 @@ make modules_install
 make install
 confirm "continue?"
 
+### INITRAMFS ###
+LOG "INSTALLING GENKERNEL"
+emerge -a genkernel
+LOG "GENERATING INITRAMFS WITH LUKS SUPPORT"
+genkernel --lvm --luks initramfs
+
 ### GRUB ###
 LOG "WRITING GRUB CONFIG TO make.conf"
 echo 'GRUB_PLATFORMS="i386-pc"' >> /etc/portage/make.conf
