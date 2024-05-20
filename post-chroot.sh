@@ -1,8 +1,5 @@
 #!/bin/bash
 
-BOOTD=/dev/sda
-ROOTD=/dev/sdb
-
 # colors
 RED='\033[0;31m'
 NC='\033[0m'

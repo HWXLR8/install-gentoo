@@ -4,6 +4,9 @@ ROOTD=/dev/sdb
 BOOTD=/dev/sda
 BOOTP=/dev/sda1
 
+# copy the above variables into post-chroot.sh
+sed -i '3i\ROOTD='"$ROOTD"'\nBOOTD='"$BOOTD"'\n' post-chroot.sh
+
 # colors
 RED='\033[0;31m'
 NC='\033[0m'
