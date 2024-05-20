@@ -65,7 +65,7 @@ eselect kernel set 1
 cd /usr/src/linux
 LOG "CONFIGURING KERNEL W/ localyesconfig"
 make localyesconfig
-make -j9
+make -j$(nproc)
 make modules_install
 make install
 confirm "continue?"
