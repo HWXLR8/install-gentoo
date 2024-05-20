@@ -81,7 +81,7 @@ LOG "WRITING GRUB CONFIG TO make.conf"
 echo 'GRUB_PLATFORMS="i386-pc"' >> /etc/portage/make.conf
 LOG "INSTALLING GRUB"
 emerge -a sys-boot/grub
-grub-install $BOOTD
+grub-install --target=i386-pc $BOOTD
 LOG "SETTING LINUX COMMAND LINE ARGUMENTS FOR BOOT"
 CRYPT_ROOT_UUID=$(blkid $ROOTD | awk '{print $2}')
 LOG "$CRYPT_ROOT_UUID"
