@@ -47,7 +47,7 @@ locale-gen
 ### HOSTNAME ###
 LOG "SET HOST NAME"
 read -p "Enter hostname: " HOST
-echo 'HOSTNAME="$HOST"' > /etc/conf.d/hostname
+echo HOSTNAME=\"$HOST\" > /etc/conf.d/hostname
 
 ### TIMEZONE ###
 LOG "SETTING TIMEZONE"
