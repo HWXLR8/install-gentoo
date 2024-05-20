@@ -26,6 +26,9 @@ then echo "please run as root"
      exit
 fi
 
+### install prerequisites ###
+pacman -Sy wget
+
 ### format disk ###
 lsblk
 echo
