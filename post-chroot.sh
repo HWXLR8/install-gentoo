@@ -62,16 +62,16 @@ eselect kernel set 1
 cd /usr/src/linux
 LOG "CONFIGURING KERNEL W/ localyesconfig"
 make localyesconfig
-make -j$(nproc)
-make modules_install
-make install
-confirm "continue?"
+# make -j$(nproc)
+# make modules_install
+# make install
+# confirm "continue?"
 
 ### INITRAMFS ###
 LOG "INSTALLING GENKERNEL"
 emerge -a genkernel
 LOG "GENERATING INITRAMFS WITH LUKS SUPPORT"
-genkernel --lvm --luks initramfs
+genkernel --lvm --luks --install all
 
 ### GRUB ###
 LOG "WRITING GRUB CONFIG TO make.conf"
