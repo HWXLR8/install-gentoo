@@ -37,9 +37,15 @@ echo -n -e "Gentoo will be installed onto the following disks:\n\n \
 	$ROOTD	/ \n\n"
 confirm "continue?"
 
+### device format ###
+LOG "FORMATTING ROOT DEVICE $ROOTD"
+echo ',,83' | sfdisk $ROOTD
+lsblk -f
+confirm "continue?"
+
 ### mkfs ###
-LOG "CREATING EXT4 FS ROOT DEVICE"
-mkfs.ext4 $ROOTD
+LOG "CREATING EXT4 FS ON ROOT DEVICE"
+mkfs.ext4 "$ROOTD"1
 lsblk -f
 confirm "continue?"
 
@@ -52,7 +58,7 @@ DIGESTS_URL=$TARBALL_URL.DIGESTS
 SIG_URL=$TARBALL_URL.asc
 mkdir gentoo
 LOG "MOUNTING ROOT"
-mount $ROOTD gentoo
+mount "$ROOTD"1 gentoo
 lsblk -f
 confirm "continue?"
 cd gentoo
