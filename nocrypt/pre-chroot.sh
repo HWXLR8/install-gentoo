@@ -1,6 +1,7 @@
 #!/bin/bash
 
-ROOTD=/dev/sda
+ROOTD=/dev/nvme0n1
+ROOTP=/dev/nvme0n1p1
 
 # copy the above variables into post-chroot.sh
 sed -i '3i\ROOTD='"$ROOTD"'\n' post-chroot.sh
@@ -45,7 +46,7 @@ confirm "continue?"
 
 ### mkfs ###
 LOG "CREATING EXT4 FS ON ROOT DEVICE"
-mkfs.ext4 "$ROOTD"1
+mkfs.ext4 $ROOTP
 lsblk -f
 confirm "continue?"
 
@@ -58,7 +59,7 @@ DIGESTS_URL=$TARBALL_URL.DIGESTS
 SIG_URL=$TARBALL_URL.asc
 mkdir gentoo
 LOG "MOUNTING ROOT"
-mount "$ROOTD"1 gentoo
+mount $ROOTP gentoo
 lsblk -f
 confirm "continue?"
 cd gentoo
