@@ -50,6 +50,14 @@ echo "$HOST" > /etc/hostname
 LOG "SETTING TIMEZONE"
 ln -sf /usr/share/zoneinfo/Canada/Eastern /etc/localtime
 
+### DNS ###
+LOG "SETTING DNS"
+echo "nameserver 9.9.9.9" > /etc/resolv.conf.head
+
+### TMPS ###
+LOG "SETTING TMPFS for /tmp"
+echo "tmpfs                    /tmp           tmpfs    defaults,noatime,nosuid,nodev,mode=1777,size=10240M 0 0" >> /etc/fstab
+
 ### KERNEL ###
 LOG "UNMASKING sys-kernel/linux-firmware"
 echo 'sys-kernel/linux-firmware linux-fw-redistributable' > /etc/portage/package.license
