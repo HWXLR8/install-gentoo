@@ -96,4 +96,14 @@ LOG "GENERATING GRUB CFG"
 grub-mkconfig -o /boot/grub/grub.cfg
 LOG "INSTALLING DHCP CLIENT"
 emerge -a net-misc/dhcpcd
+
+### ACCEPT_KEYWORDS ###
+LOG "SETTING ACCEPT_KEYWORDS"
+echo 'ACCEPT_KEYWORDS="amd64 ~amd64"' >> /etc/portage/make.conf
+
+### CPU FLAGS ###
+LOG "SETTING CPU FLAGS"
+emerge -a app-portage/cpuid2cpuflags
+echo "*/* $(cpuid2cpuflags)" > /etc/portage/package.use/cpu-flags
+
 LOG "DONE"
