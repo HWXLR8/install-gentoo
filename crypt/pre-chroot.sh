@@ -48,9 +48,9 @@ confirm "continue?"
 LOG "CREATING VFAT FS ON KEY"
 mkfs.vfat $BOOTP
 LOG "CREATING LUKS FS ON ROOT"
-cryptsetup luksFormat $ROOTD
+cryptsetup luksFormat --header header.img $ROOTD
 LOG "OPENING ROOT DEVICE"
-cryptsetup open $ROOTD root
+cryptsetup open $ROOTD root --header header.img
 LOG "CREATING EXT4 FS ON DECRYPTED ROOT"
 mkfs.ext4 /dev/mapper/root
 lsblk -f
@@ -100,7 +100,10 @@ echo "everything checks out, proceed."
 tar xpvf $TARBALL
 
 ### chroot ###
+LOG "MOUNTING /boot"
 mount $BOOTP boot
+LOG "COPYING LUKS HEADER TO /boot"
+cp -v ../header.img boot
 LOG "COPYING post-chroot.sh INTO CHROOT"
 cp -v ../post-chroot.sh .
 LOG "BEGIN CHROOT"

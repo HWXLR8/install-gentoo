@@ -83,7 +83,7 @@ LOG "SETTING LINUX COMMAND LINE ARGUMENTS FOR BOOT"
 CRYPT_ROOT_UUID=$(blkid $ROOTD | awk '{print $2}')
 LOG "$CRYPT_ROOT_UUID"
 confirm "does the above UUID look sane?"
-sed -i "/GRUB_CMDLINE_LINUX/c\GRUB_CMDLINE_LINUX=\"crypt_root=$CRYPT_ROOT_UUID root=\/dev\/mapper\/root root_trim=yes\"" /etc/default/grub
+sed -i "/GRUB_CMDLINE_LINUX/c\GRUB_CMDLINE_LINUX=\"crypt_root=$CRYPT_ROOT_UUID crypt_header=\/boot\/header.img root=\/dev\/mapper\/root root_trim=yes\"" /etc/default/grub
 LOG "GENERATING GRUB CFG"
 grub-mkconfig -o /boot/grub/grub.cfg
 LOG "INSTALLING DHCP CLIENT"
