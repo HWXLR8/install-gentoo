@@ -70,16 +70,17 @@ eselect kernel set 1
 cd /usr/src/linux
 LOG "CONFIGURING KERNEL W/ localyesconfig"
 make localyesconfig
-# make -j$(nproc)
-# make modules_install
-# make install
-# confirm "continue?"
-
-### INITRAMFS ###
 LOG "INSTALLING GENKERNEL"
 emerge -a genkernel
 LOG "GENERATING INITRAMFS WITH LUKS SUPPORT"
-genkernel --lvm --luks --install all
+genkernel --lvm --luks --install kernel
+
+### INITRAMFS ###
+LOG "INSTALLING DRACUT/CRYPTSETUP"
+emerge -a dracut
+KVER=$(make -s kernelrelease)
+LOG "INSTALLING INITRAMFS"
+dracut --kver "$KVER" --force --add crypt
 
 ### GRUB ###
 LOG "WRITING GRUB CONFIG TO make.conf"
@@ -88,10 +89,10 @@ LOG "INSTALLING GRUB"
 emerge -a sys-boot/grub
 grub-install --target=i386-pc $BOOTD
 LOG "SETTING LINUX COMMAND LINE ARGUMENTS FOR BOOT"
-CRYPT_ROOT_UUID=$(blkid $ROOTD | awk '{print $2}')
-LOG "$CRYPT_ROOT_UUID"
+CRYPT_UUID=$(blkid $ROOTD | awk '{print $2}')
+LOG "$CRYPT_UUID"
 confirm "does the above UUID look sane?"
-sed -i "/GRUB_CMDLINE_LINUX/c\GRUB_CMDLINE_LINUX=\"crypt_root=$CRYPT_ROOT_UUID crypt_header=\/boot\/header.img root=\/dev\/mapper\/root root_trim=yes\"" /etc/default/grub
+sed -i "/^GRUB_CMDLINE_LINUX=/c\GRUB_CMDLINE_LINUX=\"rd.luks.uuid=$CRYPT_UUID rd.luks.allow-discards\"" /etc/default/grub
 LOG "GENERATING GRUB CFG"
 grub-mkconfig -o /boot/grub/grub.cfg
 LOG "INSTALLING DHCP CLIENT"

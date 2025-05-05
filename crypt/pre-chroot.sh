@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ROOTD=/dev/sdb
+ROOTD=/dev/nvme0n1
 BOOTD=/dev/sda
 BOOTP=/dev/sda1
 
@@ -48,9 +48,9 @@ confirm "continue?"
 LOG "CREATING VFAT FS ON KEY"
 mkfs.vfat $BOOTP
 LOG "CREATING LUKS FS ON ROOT"
-cryptsetup luksFormat --header header.img $ROOTD
+cryptsetup luksFormat $ROOTD
 LOG "OPENING ROOT DEVICE"
-cryptsetup open $ROOTD root --header header.img
+cryptsetup open $ROOTD root
 LOG "CREATING EXT4 FS ON DECRYPTED ROOT"
 mkfs.ext4 /dev/mapper/root
 lsblk -f
@@ -102,8 +102,6 @@ tar xpvf $TARBALL
 ### chroot ###
 LOG "MOUNTING /boot"
 mount $BOOTP boot
-LOG "COPYING LUKS HEADER TO /boot"
-cp -v ../header.img boot
 LOG "COPYING post-chroot.sh INTO CHROOT"
 cp -v ../post-chroot.sh .
 LOG "BEGIN CHROOT"
