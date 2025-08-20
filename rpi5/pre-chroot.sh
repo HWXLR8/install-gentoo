@@ -149,6 +149,6 @@ if ! (( NETBOOT )); then
     prepare_disk
 fi
 
-# install_stage3
+install_stage3
 # install_firmware
 gentoo-chroot
