@@ -2,7 +2,11 @@
 
 set -euo pipefail
 
-source "../common.sh"
+function log {
+    RED='\033[0;31m'
+    NC='\033[0m'
+    echo -e "${RED}* ${1}${NC}"
+}
 
 log "env init"
 source /etc/profile

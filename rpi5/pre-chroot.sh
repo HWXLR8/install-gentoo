@@ -145,6 +145,13 @@ function gentoo-chroot {
     chroot . /bin/bash
 }
 
+function unmount-chroot {
+    log "unmounting dev/sys/proc"
+    umount -l dev
+    umount -l sys
+    umount -l proc
+}
+
 if ! (( NETBOOT )); then
     prepare_disk
 fi
@@ -152,3 +159,4 @@ fi
 install_stage3
 # install_firmware
 gentoo-chroot
+unmount-chroot
