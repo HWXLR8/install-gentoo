@@ -4,6 +4,7 @@ set -euo pipefail
 
 source "../common.sh"
 
+NETBOOT=1
 WORK=/tmp/gentoo
 DISK=/dev/sda
 GENTOO=/mnt/gentoo
@@ -54,7 +55,7 @@ function install_stage3 {
     confirm "do digests match?"
     wget -O - https://qa-reports.gentoo.org/output/service-keys.gpg | gpg --import
     gpg --verify $WORK/${TARBALL}.asc
-    log "Gentoo release fingerprint: 13EBBDBEDE7A12775DFDB1BABB572E0E2D182910"
+    log "Gentoo release fingerprint: 13EB BDBE DE7A 1277 5DFD B1BA BB57 2E0E 2D18 2910"
     confirm "do fingerprints match?"
     tar xpvf $WORK/${TARBALL} -C $GENTOO/
 }
@@ -62,7 +63,7 @@ function install_stage3 {
 function download_gentoo_snapshot {
     URL="https://distfiles.gentoo.org/snapshots"
     # SNAPSHOT="gentoo-latest.tar.xz"
-    SNAPSHOT="gentoo-20250616.tar.xz"
+    SNAPSHOT="gentoo-20250819.tar.xz"
     cd $WORK
     log "downloading latest gentoo snapshot from $URL/$SNAPSHOT"
     wget "$URL/$SNAPSHOT"
@@ -144,7 +145,10 @@ function gentoo-chroot {
     chroot . /bin/bash
 }
 
-#prepare_disk
-#install_stage3
-#install_firmware
+if ! (( NETBOOT )); then
+    prepare_disk
+fi
+
+# install_stage3
+# install_firmware
 gentoo-chroot
