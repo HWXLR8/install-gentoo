@@ -31,8 +31,15 @@ echo 'C.UTF8 UTF-8' >> /etc/locale.gen
 log "generating locale"
 locale-gen
 
+### TIMEZONE ###
 log "setting timezone"
 ln -sf /usr/share/zoneinfo/Canada/Eastern /etc/localtime
 
+### TMPFS ###
 log "creating tmpfs for /tmp"
 echo "tmpfs                    /tmp           tmpfs    defaults,noatime,nosuid,nodev,mode=1777,size=10240M 0 0" >> /etc/fstab
+
+### MISC ###
+# this stops the following error from spamming the term:
+# INIT Id "f0" respawning too fast: disabled for 5 minutes
+sudo sed -i '/^[[:space:]]*f0:/s/^/# /' /etc/inittab
