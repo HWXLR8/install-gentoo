@@ -51,3 +51,17 @@ echo 'VIDEO_CARDS="v3d"' >> /etc/portage/make.conf
 # this stops the following error from spamming the term:
 # INIT Id "f0" respawning too fast: disabled for 5 minutes
 sudo sed -i '/^[[:space:]]*f0:/s/^/# /' /etc/inittab
+
+### ntp ###
+log "emerging ntp"
+emerge net-misc/ntp
+log "starting ntp-client"
+rc-service ntp-client start
+log "adding ntp-client to default runlevel"
+rc-update add ntp-client default
+
+### sudo ###
+log "emerging sudo"
+USE="-sendmail" emerge sudo
+log "modifying /etc/sudoers"
+sed -i '/%wheel ALL=(ALL:ALL) ALL/ s/^[[:space:]]*#[[:space:]]*//' /etc/sudoers
