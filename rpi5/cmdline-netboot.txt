@@ -1,0 +1,1 @@
+dwc_otg.lpm_enable=0 console=tty1 root=/dev/nfs nfsroot=${NET_IP}:${NETPATH}/${SN}-root,vers=4.2,tcp,rsize=32768,wsize=32768 rw ip=dhcp rootwait net.ifnames=0 logo.nologo usbhid.mousepoll=1

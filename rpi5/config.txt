@@ -1,0 +1,8 @@
+# have a properly sized image
+disable_overscan=1
+
+# Enable audio (loads snd_bcm2835)
+dtparam=audio=on
+
+# Enable DRM VC4 V3D driver
+dtoverlay=vc4-kms-v3d-pi5
