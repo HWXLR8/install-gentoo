@@ -21,3 +21,17 @@ check_if_root() {
         exit
     fi
 }
+
+gentoo_chroot() {
+    log "copying post-chroot.sh into chroot"
+    cp -v ../post-chroot.sh .
+    log "begin chroot"
+    mount -t proc none proc
+    mount --rbind /sys sys
+    mount --make-rslave sys
+    mount --rbind /dev dev
+    mount --make-rslave dev
+    log "copying resolv.conf into chroot"
+    cp -v /etc/resolv.conf etc
+    chroot . /bin/bash
+}

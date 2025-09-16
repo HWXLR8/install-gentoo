@@ -8,6 +8,8 @@ ROOTD=/dev/nvme0n1
 BOOTD=/dev/sda
 BOOTP=/dev/sda1
 
+ROOT=/dev/mapper/root
+
 # copy the above variables into post-chroot.sh
 sed -i '3i\ROOTD='"$ROOTD"'\nBOOTD='"$BOOTD"'\n' post-chroot.sh
 
@@ -84,13 +86,4 @@ tar xpvf $TARBALL
 ### chroot ###
 log "MOUNTING /boot"
 mount $BOOTP boot
-log "COPYING post-chroot.sh INTO CHROOT"
-cp -v ../post-chroot.sh .
-log "BEGIN CHROOT"
-mount -t proc none proc
-mount --rbind /sys sys
-mount --make-rslave sys
-mount --rbind /dev dev
-mount --make-rslave dev
-cp /etc/resolv.conf etc
-chroot . /bin/bash
+gentoo_chroot()
