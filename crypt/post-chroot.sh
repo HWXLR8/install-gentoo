@@ -43,7 +43,7 @@ log "INSTALLING GRUB"
 emerge -a sys-boot/grub
 grub-install --target=i386-pc $BOOTD
 log "SETTING LINUX COMMAND LINE ARGUMENTS FOR BOOT"
-CRYPT_UUID=$(blkid $ROOTD | awk '{print $2}')
+CRYPT_UUID=$(blkid -s UUID -o value "$ROOTD")
 log "$CRYPT_UUID"
 confirm "does the above UUID look sane?"
 sed -i "/^GRUB_CMDLINE_LINUX=/c\GRUB_CMDLINE_LINUX=\"rd.luks.uuid=$CRYPT_UUID rd.luks.allow-discards\"" /etc/default/grub
