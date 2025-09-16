@@ -10,6 +10,14 @@ confirm() {
     fi
 }
 
-function log {
+log() {
     echo -e "${RED}* ${1}${NC}"
+}
+
+check_if_root() {
+    # check if user is root
+    if [ "$EUID" -ne 0 ]; then
+        echo "please run as root"
+        exit
+    fi
 }
