@@ -86,4 +86,4 @@ tar xpvf $TARBALL
 ### chroot ###
 log "MOUNTING /boot"
 mount $BOOTP boot
-gentoo_chroot()
+gentoo_chroot
