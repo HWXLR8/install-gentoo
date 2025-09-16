@@ -78,4 +78,4 @@ echo "everything checks out, proceed."
 tar xpvf $TARBALL
 
 ### chroot ###
-gentoo_chroot()
+gentoo_chroot
