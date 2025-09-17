@@ -23,16 +23,16 @@ check_if_root() {
 }
 
 gentoo_chroot() {
-    log "copying post-chroot.sh into chroot"
+    log "copying files into chroot"
     cp -v ../post-chroot.sh .
+    cp -v ../common.sh .
+    cp -v /etc/resolv.conf etc
     log "begin chroot"
     mount -t proc none proc
     mount --rbind /sys sys
     mount --make-rslave sys
     mount --rbind /dev dev
     mount --make-rslave dev
-    log "copying resolv.conf into chroot"
-    cp -v /etc/resolv.conf etc
     chroot . /bin/bash
 }
 
@@ -80,8 +80,6 @@ tmpfs_setup() {
 ntp_setup() {
     log "emerging ntp"
     emerge net-misc/ntp
-    log "starting ntp-client"
-    rc-service ntp-client start
     log "adding ntp-client to default runlevel"
     rc-update add ntp-client default
 }
