@@ -30,8 +30,8 @@ log "GENERATING INITRAMFS WITH LUKS SUPPORT"
 genkernel --lvm --luks --install kernel
 
 ### INITRAMFS ###
-log "INSTALLING DRACUT/CRYPTSETUP"
-emerge -a dracut
+log "INSTALLING DRACUT+CRYPTSETUP"
+emerge -a dracut cryptsetup
 KVER=$(make -s kernelrelease)
 log "INSTALLING INITRAMFS"
 dracut --kver "$KVER" --force --add crypt
@@ -46,7 +46,7 @@ log "SETTING LINUX COMMAND LINE ARGUMENTS FOR BOOT"
 CRYPT_UUID=$(blkid -s UUID -o value "$ROOTD")
 log "$CRYPT_UUID"
 confirm "does the above UUID look sane?"
-sed -i "/^GRUB_CMDLINE_LINUX=/c\GRUB_CMDLINE_LINUX=\"rd.luks.uuid=$CRYPT_UUID rd.luks.allow-discards\"" /etc/default/grub
+sed -i "s|^#\?GRUB_CMDLINE_LINUX=.*|GRUB_CMDLINE_LINUX=\"rd.luks.uuid=${CRYPT_UUID} rd.luks.allow-discards\"|" /etc/default/grub
 log "GENERATING GRUB CFG"
 grub-mkconfig -o /boot/grub/grub.cfg
 log "INSTALLING DHCP CLIENT"
