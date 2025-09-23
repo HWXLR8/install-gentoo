@@ -2,8 +2,8 @@
 
 set -euo pipefail
 
-source ../common.sh
-source ./config.sh
+source ../../common.sh
+source ../config.sh
 
 log "partitioning $DISK"
 parted -s $DISK mklabel msdos \

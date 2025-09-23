@@ -2,8 +2,8 @@
 
 set -euo pipefail
 
-source ../common.sh
-source ./config.sh
+source ../../common.sh
+source ../config.sh
 
 log "unmounting dev/sys/proc"
 umount -l dev

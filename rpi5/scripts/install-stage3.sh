@@ -2,8 +2,8 @@
 
 set -euo pipefail
 
-source ../common.sh
-source ./config.sh
+source ../../common.sh
+source ../config.sh
 
 ROOT_URL="https://distfiles.gentoo.org/releases/arm64/autobuilds/current-stage3-arm64-openrc/"
 NAME=$(curl -s ${ROOT_URL}latest-stage3-arm64-openrc.txt | grep stage3 | awk '{print $1}')

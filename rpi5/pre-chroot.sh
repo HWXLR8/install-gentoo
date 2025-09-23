@@ -3,13 +3,13 @@
 set -euo pipefail
 
 source ../common.sh
-source ./config.sh
+source config.sh
 
 
 if ! (( NETBOOT )); then
-    ./prepare-disk.sh
+    ./scripts/prepare-disk.sh
 fi
-./install-stage3.sh
-./install-firmware.sh
-./gentoo-chroot.sh
-./unmount-chroot.sh
+./scripts/install-stage3.sh
+./scripts/install-firmware.sh
+./scripts/gentoo-chroot.sh
+./scripts/unmount-chroot.sh

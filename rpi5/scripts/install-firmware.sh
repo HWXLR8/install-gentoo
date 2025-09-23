@@ -2,8 +2,8 @@
 
 set -euo pipefail
 
-source ../common.sh
-source ./config.sh
+source ../../common.sh
+source ../config.sh
 
 cd $WORK
 
@@ -22,13 +22,13 @@ cp -rv firmware/boot/overlays $BOOT
 
 log "writing cmdline.txt"
 if (( NETBOOT )); then
-    envsubst < cmdline-netboot.txt > ${BOOT}/cmdline.txt
+    envsubst < ../cmdline-netboot.txt > ${BOOT}/cmdline.txt
 else
-    cp -v cmdline-bare-metal.txt ${BOOT}/cmdline.txt
+    cp -v ../cmdline-bare-metal.txt ${BOOT}/cmdline.txt
 fi
 
 log "writing config.txt"
-cp -v config.txt $BOOT
+cp -v ../config.txt $BOOT
 
 log "copying firmware"
 cp -rv firmware/modules $ROOT/lib/

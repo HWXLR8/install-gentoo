@@ -2,8 +2,8 @@
 
 set -euo pipefail
 
-source ../common.sh
-source ./config.sh
+source ../../common.sh
+source ../config.sh
 
 URL="https://distfiles.gentoo.org/snapshots"
 # SNAPSHOT="gentoo-latest.tar.xz"

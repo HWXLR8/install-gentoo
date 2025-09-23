@@ -2,11 +2,11 @@
 
 set -euo pipefail
 
-source ../common.sh
-source ./config.sh
+source ../../common.sh
+source ../config.sh
 
 log "copying post-chroot.sh into chroot"
-cp -v post-chroot.sh $ROOT
+cp -v ../post-chroot.sh $ROOT
 log "begin chroot"
 cd $ROOT
 mount -t proc none proc
