@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-source ../common.sh
+source common.sh
 source /etc/profile
 
 sync_portage
