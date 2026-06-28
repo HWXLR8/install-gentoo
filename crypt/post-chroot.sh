@@ -24,10 +24,23 @@ eselect kernel set 1
 cd /usr/src/linux
 log "CONFIGURING KERNEL W/ localyesconfig"
 make localyesconfig
+# for docker support...
+scripts/config --enable NETFILTER_XTABLES_LEGACY
+scripts/config --enable IP_NF_IPTABLES
+scripts/config --enable IP6_NF_IPTABLES
+scripts/config --module IP_NF_NAT
+scripts/config --module IP_NF_TARGET_MASQUERADE
+scripts/config --module IP6_NF_NAT
+scripts/config --module IP6_NF_TARGET_MASQUERADE
+scripts/config --module IP_NF_RAW
+scripts/config --module IP6_NF_RAW
+make olddefconfig
+# to save for future genkernel builds
+cp .config /etc/kernels/kernel-config-$(make -s kernelrelease)
 log "INSTALLING GENKERNEL"
 emerge -a genkernel
-log "GENERATING INITRAMFS WITH LUKS SUPPORT"
-genkernel --lvm --luks --install kernel
+log "BUILDING KERNEL"
+genkernel --lvm --luks --install --makeopts="-j$(nproc)" kernel
 
 ### INITRAMFS ###
 log "INSTALLING DRACUT+CRYPTSETUP"
