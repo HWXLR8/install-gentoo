@@ -3,6 +3,7 @@
 set -euo pipefail
 
 source common.sh
+source config.sh
 source /etc/profile
 
 sync_portage
@@ -56,7 +57,7 @@ log "INSTALLING GRUB"
 emerge -a sys-boot/grub
 grub-install --target=i386-pc $BOOTD
 log "SETTING LINUX COMMAND LINE ARGUMENTS FOR BOOT"
-CRYPT_UUID=$(blkid -s UUID -o value "$ROOTD")
+CRYPT_UUID=$(blkid -s UUID -o value "$CRYPTP")
 log "$CRYPT_UUID"
 confirm "does the above UUID look sane?"
 sed -i "s|^#\?GRUB_CMDLINE_LINUX=.*|GRUB_CMDLINE_LINUX=\"rd.luks.uuid=${CRYPT_UUID} rd.luks.allow-discards\"|" /etc/default/grub

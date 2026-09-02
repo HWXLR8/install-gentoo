@@ -25,6 +25,7 @@ check_if_root() {
 gentoo_chroot() {
     log "copying files into chroot"
     cp -v ../post-chroot.sh .
+    cp -v ../config.sh .
     cp -v ../../common.sh .
     cp -v /etc/resolv.conf etc
     log "begin chroot"

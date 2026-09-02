@@ -3,15 +3,7 @@
 set -euo pipefail
 
 source ../common.sh
-
-ROOTD=/dev/nvme0n1
-BOOTD=/dev/sda
-BOOTP=/dev/sda1
-
-ROOT=/dev/mapper/root
-
-# copy the above variables into post-chroot.sh
-sed -i '3i\ROOTD='"$ROOTD"'\nBOOTD='"$BOOTD"'\n' post-chroot.sh
+source config.sh
 
 ### install prerequisites ###
 pacman -Sy wget
@@ -19,24 +11,46 @@ pacman -Sy wget
 ### format disk ###
 lsblk
 echo
-echo -n -e "Gentoo will be installed onto the following disks:\n\n \
-	$BOOTD	/boot\n\
-	$ROOTD	/ \n\n"
+if (( DETACHED_BOOT )); then
+	echo -n -e "Gentoo will be installed onto the following disks:\n\n \
+	$BOOTP	/boot	(detached key)\n\
+	$CRYPTP	/	(luks)\n\n"
+else
+	echo -n -e "Gentoo will be installed onto the following disk:\n\n \
+	$BOOTP	/boot\n\
+	$CRYPTP	/	(luks)\n\n"
+fi
 confirm "continue?"
-log "FORMATTING KEY DEVICE $BOOTD"
-echo 'type=83' | sfdisk $BOOTD
+
+### partition ###
+if (( DETACHED_BOOT )); then
+	log "FORMATTING KEY DEVICE $BOOTD"
+	echo 'type=83' | sfdisk $BOOTD
+else
+	log "FORMATTING ROOT DEVICE $BOOTD"
+	sfdisk $BOOTD <<-'EOF'
+	label: dos
+	,256M,83,*
+	,,83
+	EOF
+fi
 lsblk -f
 confirm "continue?"
 
 ### mkfs ###
-log "CREATING VFAT FS ON KEY"
-mkfs.vfat $BOOTP
+if (( DETACHED_BOOT )); then
+	log "CREATING VFAT FS ON KEY"
+	mkfs.vfat $BOOTP
+else
+	log "CREATING EXT4 FS ON BOOT PARTITION"
+	mkfs.ext4 $BOOTP
+fi
 log "CREATING LUKS FS ON ROOT"
-cryptsetup luksFormat $ROOTD
+cryptsetup luksFormat $CRYPTP
 log "OPENING ROOT DEVICE"
-cryptsetup open $ROOTD root
+cryptsetup open $CRYPTP root
 log "CREATING EXT4 FS ON DECRYPTED ROOT"
-mkfs.ext4 /dev/mapper/root
+mkfs.ext4 $ROOT
 lsblk -f
 confirm "continue?"
 
@@ -47,12 +61,12 @@ TARBALL_NAME=$(curl -s $TARBALL_ROOT_URL/latest-stage3-amd64-openrc.txt | grep s
 TARBALL_URL=$TARBALL_ROOT_URL/$TARBALL_NAME
 DIGESTS_URL=$TARBALL_URL.DIGESTS
 SIG_URL=$TARBALL_URL.asc
-mkdir gentoo
+mkdir $WORK
 log "MOUNTING ROOT"
-mount /dev/mapper/root gentoo
+mount $ROOT $WORK
 lsblk -f
 confirm "continue?"
-cd gentoo
+cd $WORK
 log "DOWNLOADING TARBALL"
 wget $TARBALL_URL
 wget $DIGESTS_URL
