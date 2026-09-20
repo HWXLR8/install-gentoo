@@ -81,8 +81,8 @@ tmpfs_setup() {
 ntp_setup() {
     log "emerging ntp"
     emerge net-misc/ntp
-    log "adding ntp-client to default runlevel"
-    rc-update add ntp-client default
+    log "adding ntpd to default runlevel"
+    rc-update add ntpd default
 }
 
 sudo_setup() {
