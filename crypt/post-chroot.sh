@@ -78,6 +78,12 @@ echo "*/* $(cpuid2cpuflags)" > /etc/portage/package.use/cpu-flags
 ntp_setup
 sudo_setup
 
+### SYSLOG ###
+log "INSTALLING SYSKLOGD"
+emerge -a app-admin/sysklogd
+rc-update add sysklogd default
+rc-service sysklogd start
+
 ### USE FLAGS ###
 log "SETTING USE FLAGS"
 echo 'USE="wayland elogind -systemd -pulseaudio -selinux"' >> /etc/portage/make.conf
