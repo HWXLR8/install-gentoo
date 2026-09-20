@@ -78,4 +78,25 @@ echo "*/* $(cpuid2cpuflags)" > /etc/portage/package.use/cpu-flags
 ntp_setup
 sudo_setup
 
+### USE FLAGS ###
+log "SETTING USE FLAGS"
+echo 'USE="wayland elogind -systemd -pulseaudio -selinux"' >> /etc/portage/make.conf
+
+### GIT ###
+log "INSTALLING GIT"
+USE="-perl" emerge -a dev-vcs/git
+
+### USER ENVIRONMENT ###
+# everything below runs as $USERNAME (set by user_setup), not root, so nothing
+# here ends up root-owned. quoted 'EOF' means ~ and $vars expand in the user's
+# shell -- to pass a value in from this script, unquote it below and escape the
+# vars you DON'T want expanded here.
+log "SETTING UP USER ENVIRONMENT FOR $USERNAME"
+su - $USERNAME <<-'EOF'
+	set -euo pipefail
+
+	mkdir -pv ~/src
+	git clone https://github.com/HWXLR8/etc ~/src/etc
+EOF
+
 log "DONE"
