@@ -37,6 +37,7 @@ scripts/config --module IP_NF_RAW
 scripts/config --module IP6_NF_RAW
 make olddefconfig
 # to save for future genkernel builds
+mkdir -p /etc/kernels
 cp .config /etc/kernels/kernel-config-$(make -s kernelrelease)
 log "BUILDING KERNEL"
 genkernel --lvm --luks --install --makeopts="-j$(nproc)" kernel
