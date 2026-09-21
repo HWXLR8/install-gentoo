@@ -81,7 +81,6 @@ sudo_setup
 log "INSTALLING SYSKLOGD"
 emerge -a app-admin/sysklogd
 rc-update add sysklogd default
-rc-service sysklogd start
 
 ### USE FLAGS ###
 log "SETTING USE FLAGS"
@@ -89,7 +88,7 @@ echo 'USE="wayland elogind -systemd -pulseaudio -selinux"' >> /etc/portage/make.
 
 ### GIT ###
 log "INSTALLING GIT"
-USE="-perl" emerge -a dev-vcs/git
+USE="-perl -rust" emerge -a dev-vcs/git
 
 ### USER ENVIRONMENT ###
 # everything below runs as $USERNAME (set by user_setup), not root, so nothing
