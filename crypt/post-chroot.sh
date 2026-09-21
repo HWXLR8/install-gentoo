@@ -17,7 +17,7 @@ tmpfs_setup
 log "UNMASKING sys-kernel/linux-firmware"
 echo 'sys-kernel/linux-firmware linux-fw-redistributable' > /etc/portage/package.license
 log "EMERGE KERNEL SOURCES/FW"
-emerge -a sys-kernel/gentoo-sources sys-kernel/linux-firmware
+emerge -a sys-kernel/gentoo-sources sys-kernel/linux-firmware sys-kernel/genkernel
 log "ESELECT KERNEL"
 eselect kernel list
 confirm "is setting kernel option to 1 ok?"
@@ -38,8 +38,6 @@ scripts/config --module IP6_NF_RAW
 make olddefconfig
 # to save for future genkernel builds
 cp .config /etc/kernels/kernel-config-$(make -s kernelrelease)
-log "INSTALLING GENKERNEL"
-emerge -a genkernel
 log "BUILDING KERNEL"
 genkernel --lvm --luks --install --makeopts="-j$(nproc)" kernel
 
