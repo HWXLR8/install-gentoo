@@ -5,9 +5,6 @@ set -euo pipefail
 source ../common.sh
 source config.sh
 
-### install prerequisites ###
-pacman -Sy wget
-
 ### format disk ###
 lsblk
 echo
@@ -68,9 +65,9 @@ lsblk -f
 confirm "continue?"
 cd $WORK
 log "DOWNLOADING TARBALL"
-wget $TARBALL_URL
-wget $DIGESTS_URL
-wget $SIG_URL
+curl -fLO $TARBALL_URL
+curl -fLO $DIGESTS_URL
+curl -fLO $SIG_URL
 log "PRESENT WORKING DIR"
 pwd
 log "DIR CONTENTS"
@@ -86,7 +83,7 @@ sha512sum $TARBALL
 echo
 confirm "Do the above digests match up?"
 # fetch all gentoo release keys
-wget -O - https://qa-reports.gentoo.org/output/service-keys.gpg | gpg --import
+curl -fsSL https://qa-reports.gentoo.org/output/service-keys.gpg | gpg --import
 echo
 gpg --verify $TARBALL.asc
 echo
