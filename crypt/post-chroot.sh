@@ -4,7 +4,7 @@ set -euo pipefail
 
 source common.sh
 source config.sh
-source /etc/profile
+set +u; source /etc/profile; set -u
 
 sync_portage
 user_setup
